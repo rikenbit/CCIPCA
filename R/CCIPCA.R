@@ -3,11 +3,11 @@ CCIPCA <- function(data=NA, runmode="OnMemory", filelist=NA, dim, param){
     if(runmode == "OnMemory"){
         data <- as.matrix(data)
         # v : Initial Eigen vector
-        v <- t(data[1:dim,])
+        v <- t(data[1:dim, ])
         colnames(v) <- paste0("PA", 1:dim)
         # u : Initial Observed data for calculation of Eigen vectors
         u <- v
-        u[,] <- NA
+        u[, ] <- NA
         u <- cbind(u, NA)
 
         ################### CCIPCA ###################
@@ -15,17 +15,17 @@ CCIPCA <- function(data=NA, runmode="OnMemory", filelist=NA, dim, param){
         for(n in 1:nrow(data)){
             # Evaluate Progress Bar
             setTxtProgressBar(pb, n)
-            u[,1] <- t(data[n,])
-            for(i in 1:min(dim,n)){
+            u[,1] <- t(data[n, ])
+            for(i in 1:min(dim, n)){
                 if(i == n){
-                    v[,i] <- u[,i] 
+                    v[, i] <- u[, i] 
                 }else{
                     w1 <- (n-1-param)/n
                     w2 <- (1+param)/n
                     # Update of the i-th eigen vector 
-                    v[,i] <- w1*v[,i,drop=F] + w2*u[,i,drop=F]%*%t(u[,i,drop=F])%*%(v[,i,drop=F]/as.numeric(sqrt(crossprod(v[,i]))))
+                    v[, i] <- w1*v[, i, drop=F] + w2*u[, i, drop=F]%*%t(u[, i, drop=F])%*%(v[, i, drop=F]/as.numeric(sqrt(crossprod(v[, i]))))
                     # Update of the (i+1)-th data for next (i+1)-th eigen vector 
-                    u[,(i+1)] <- u[,i, drop=F] - as.numeric(t(u[,i,drop=F])%*%(v[,i,drop=F]/as.numeric(sqrt(crossprod(v[,i])))))*(v[,i,drop=F]/as.numeric(sqrt(crossprod(v[,i]))))
+                    u[, (i+1)] <- u[, i, drop=F] - as.numeric(t(u[, i, drop=F])%*%(v[, i, drop=F]/as.numeric(sqrt(crossprod(v[, i])))))*(v[, i, drop=F]/as.numeric(sqrt(crossprod(v[, i]))))
                 }
             }
         }
@@ -42,10 +42,10 @@ CCIPCA <- function(data=NA, runmode="OnMemory", filelist=NA, dim, param){
                 pre_data <- read.big.matrix(filelist[i], type="double")
                 v <- big.matrix(nrow=length(pre_data), ncol=dim)
                 u <- big.matrix(nrow=length(pre_data), ncol=(dim+1))
-                v[,1] <- pre_data[1,]
+                v[, 1] <- pre_data[1, ]
                 rm(pre_data)
             }else{
-                v[,i] <- read.big.matrix(filelist[i], type="double")[,]
+                v[, i] <- read.big.matrix(filelist[i], type="double")[, ]
             }
         }
         ################### CCIPCA ###################
@@ -55,17 +55,17 @@ CCIPCA <- function(data=NA, runmode="OnMemory", filelist=NA, dim, param){
         for(n in 1:length(filelist)){
             # Evaluate Progress Bar
             setTxtProgressBar(pb, n)
-            u[,1] <- read.big.matrix(filelist[n], type="double")[,]
-            for(i in 1:min(dim,n)){
+            u[, 1] <- read.big.matrix(filelist[n], type="double")[, ]
+            for(i in 1:min(dim, n)){
                 if(i == n){
-                    v[,i] <- u[,i]
+                    v[, i] <- u[, i]
                 }else{
                     w1 <- (n-1-param)/n
                     w2 <- (1+param)/n
                     # Update of the i-th eigen vector 
-                    v[,i] <- w1*v[,i,drop=F] + w2*u[,i,drop=F]%*%(t(u[,i,drop=F])%*%(v[,i,drop=F]/as.numeric(sqrt(crossprod(v[,i])))))
+                    v[, i] <- w1*v[, i, drop=F] + w2*u[, i, drop=F]%*%(t(u[, i, drop=F])%*%(v[, i, drop=F]/as.numeric(sqrt(crossprod(v[, i])))))
                     # Update of the (i+1)-th data for next (i+1)-th eigen vector 
-                    u[,(i+1)] <- u[,i, drop=F] - as.numeric(t(u[,i,drop=F])%*%(v[,i,drop=F]/as.numeric(sqrt(crossprod(v[,i])))))*(v[,i,drop=F]/as.numeric(sqrt(crossprod(v[,i]))))
+                    u[, (i+1)] <- u[, i, drop=F] - as.numeric(t(u[, i, drop=F])%*%(v[, i, drop=F]/as.numeric(sqrt(crossprod(v[, i])))))*(v[, i, drop=F]/as.numeric(sqrt(crossprod(v[, i]))))
                 }
             }
         }
@@ -76,8 +76,8 @@ CCIPCA <- function(data=NA, runmode="OnMemory", filelist=NA, dim, param){
     values <- rep(NA, length=dim)
     vectors <- matrix(NA, nrow=nrow(v), ncol=dim)
     for(i in 1:ncol(v)){
-        values[i] <- as.numeric(sqrt(crossprod(v[,i])))
-        vectors[,i] <- v[,i,drop=F]/as.numeric(sqrt(crossprod(v[,i])))
+        values[i] <- as.numeric(sqrt(crossprod(v[, i])))
+        vectors[, i] <- v[, i, drop=F]/as.numeric(sqrt(crossprod(v[, i])))
     }
     return(list(values=values, vectors=vectors))
 }

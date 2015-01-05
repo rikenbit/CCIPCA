@@ -32,7 +32,7 @@ pca2 <- eigen(var(data))
 pca3 <- prcomp(data)
 
 # Onmemory mode
-pca4 <- CCIPCA(data=as.matrix(data), dim=3, param=2)
+pca4 <- CCIPCA(data=data, dim=3, param=2)
 
 # FileLoading mode
 \dontrun{
