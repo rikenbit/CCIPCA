@@ -1,0 +1,10 @@
+Package: CCIPCA
+Type: Package
+Title: Candid Covariance-Free Incremental PCA (CCIPCA)
+Version: 0.99.0
+Date: 2015-01-03
+Author: Koki Tsuyuzaki, Itoshi Nikaido
+Maintainer: Koki Tsuyuzaki <k.t.the-answer@hotmail.co.jp>
+Description: Incremental (online) PCA without estimation of covariance matrix
+License: Artistic-2.0
+Imports: bigmemory
