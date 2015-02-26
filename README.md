@@ -7,5 +7,5 @@ Installation
 ======
 ```
 library(devtools)
-devtools::install_github("kokitsuyuzaki/ccipca")
+devtools::install_github("kokitsuyuzaki/CCIPCA")
 ```
