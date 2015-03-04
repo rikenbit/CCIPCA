@@ -12,7 +12,7 @@ R CMD INSTALL CCIPCA
 or type the code below in the R console window
 ~~~~
 library(devtools)
-devtools::install_github("rikenbit/CCIPCA")
+devtools::install_github("kokitsuyuzaki/CCIPCA")
 ~~~~
 
 References
